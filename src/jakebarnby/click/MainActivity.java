@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 		if (interstitial == null) {
 			interstitial = new InterstitialAd(this);
 			interstitial.setAdUnitId(getResources().getString(R.string.admob_interstitial_id));
-			interstitial.loadAd(new AdRequest.Builder().addTestDevice(GameActivity.GALAXYNOTE10_TEST_ID).addTestDevice(GameActivity.GALAXYS3_TEST_ID).addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+			interstitial.loadAd(new AdRequest.Builder().build());
 		}
 	}
 	
@@ -74,10 +74,6 @@ public class MainActivity extends Activity {
 	public void newGame(View view) {
 		Intent intent = new Intent(MainActivity.this, GameActivity.class);
 		startActivity(intent);
-		if (interstitial.isLoaded()) {
-			interstitial.show();
-		}
-		interstitial = null;
 	}
 
 	/**

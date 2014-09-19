@@ -25,9 +25,6 @@ import com.jakebarnby.click.R;
  */
 public class GameActivity extends Activity {
 	
-	static final String GALAXYS3_TEST_ID = "C6B56C5E1BAA0F338C091FC79F9289C2";
-	static final String GALAXYNOTE10_TEST_ID = "19E4C25A726D8BF8B7C32668C35CE52B";
-	
 	private static final long COUNTDOWN_TIME = 5900;
 	private static int score = 0;
 	
@@ -84,7 +81,7 @@ public class GameActivity extends Activity {
 		super.onResume();
 		// Resume ad adView
 		if (adView != null) { adView.resume(); }
-		score = 0;
+		GameActivity.score = 0;
 	}
 
 	@Override
@@ -117,7 +114,7 @@ public class GameActivity extends Activity {
 	    // Create an ad.
 		if (adView == null) {
 			adView = (AdView) findViewById(R.id.adView);
-		    adView.loadAd(new AdRequest.Builder().addTestDevice(GameActivity.GALAXYNOTE10_TEST_ID).addTestDevice(GALAXYS3_TEST_ID).addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+		    adView.loadAd(new AdRequest.Builder().build());
 		}
 	}
 	
