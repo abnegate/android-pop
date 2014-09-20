@@ -30,34 +30,32 @@
             android:background="@color/white" />
     </RelativeLayout>
 
-    <jakebarnby.click.CustomFontTextView
+    <jakebarnby.pop.CustomFontTextView
         android:id="@+id/textView_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.33"
+        android:layout_weight="0.1"
         android:gravity="center"
         android:text="@string/start_clicking"
         android:textColor="@color/black"
         android:textSize="@dimen/textView_timer_textsize"
         click:fontName="freescript.ttf" />
 
-    <ImageButton
-        android:id="@+id/button_clickbutton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.33"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/button_clickbutton_up"
-        android:onClick="updateCount"
-        android:src="@layout/clickbutton_background_selector" />
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.6"
+        android:background="@color/background"
+        android:orientation="horizontal" >
+    </FrameLayout>
 
-    <jakebarnby.click.CustomFontTextView
+    <jakebarnby.pop.CustomFontTextView
         android:id="@+id/textView_clickcount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-	    android:layout_gravity="center"
-        android:layout_weight="0.33"
+        android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
         android:gravity="center"
         android:text="@string/initial_clicks"
         android:textColor="@color/black"

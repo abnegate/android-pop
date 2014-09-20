@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.65" >
 
-        <jakebarnby.click.CustomFontTextView
+        <jakebarnby.pop.CustomFontTextView
             android:id="@+id/click_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

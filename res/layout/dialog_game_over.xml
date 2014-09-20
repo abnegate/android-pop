@@ -7,9 +7,9 @@
     android:background="@color/background"
     
     android:orientation="vertical"
-    tools:context="jakebarnby.click.GameActivity" >
+    tools:context="jakebarnby.pop.GameActivity" >
 
-    <jakebarnby.click.CustomFontTextView
+    <jakebarnby.pop.CustomFontTextView
         android:id="@+id/textView_dialogGOTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:layout_above="@+id/textView_dialogGOInfo"
         android:background="@color/white" />
 
-    <jakebarnby.click.CustomFontTextView
+    <jakebarnby.pop.CustomFontTextView
         android:id="@+id/textView_dialogGOInfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -1,11 +1,12 @@
-package jakebarnby.click;
+package jakebarnby.pop;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import com.jakebarnby.click.R;
+
+import com.jakebarnby.pop.R;
 
 /**
  * A <code>TextView</code> that allows a resource font to be set in XML.

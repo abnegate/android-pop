@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Click!</string>
+    <string name="app_name">Pop!</string>
     <string name="button_newgame">New Game</string>
     <string name="button_highscore">High Score</string>
     <string name="button_quit">Quit</string>
-    <string name="button_clickbutton_up">Click it!</string>
+    <string name="imageView_description">Balloon area</string>
     <string name="title_activity_new_game">NewGame</string>
     <string name="initial_clicks">Clicks: 0</string>
     <string name="start_clicking">Start clicking!</string>
@@ -15,7 +15,7 @@
     <string name="dialog_back">Back</string>
     <string name="dialog_newGame">New Game</string>
     <string name="title_activity_ad">AdActivity</string>
-    <string name="admob_interstitial_id">ca-app-pub-4043849132226838/3728744301</string>
-    <string name="admob_banner_id">ca-app-pub-4043849132226838/4324173506</string>
+    <string name="admob_interstitial_id">NEW AD</string>
+    <string name="admob_banner_id">NEW AD</string>
 
 </resources>

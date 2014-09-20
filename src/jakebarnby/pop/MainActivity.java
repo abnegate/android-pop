@@ -1,8 +1,8 @@
-package jakebarnby.click;
+package jakebarnby.pop;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.jakebarnby.click.R;
+import com.jakebarnby.pop.R;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 		if (interstitial == null) {
 			interstitial = new InterstitialAd(this);
 			interstitial.setAdUnitId(getResources().getString(R.string.admob_interstitial_id));
-			interstitial.loadAd(new AdRequest.Builder().build());
+			interstitial.loadAd(new AdRequest.Builder().addTestDevice("842328DD4BE72A185090A62C049FBA76").build());
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package jakebarnby.click;
+package jakebarnby.pop;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -6,7 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.jakebarnby.click.R;
+import com.jakebarnby.pop.R;
 
 /**
  * A <code>Dialog</code> that fades in and out with the title section removed and is inflated with a custom layout
