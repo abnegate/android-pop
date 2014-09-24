@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,8 +19,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -82,7 +79,7 @@ public class GameActivity extends Activity {
 	private void createBalloons() {
 		balloons = new ImageButton[MAX_BALLOONS];
 		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.MATCH_PARENT);
 		
 		for (int i = 0; i < GameActivity.MAX_BALLOONS; i++) {
 			int imageId = (int)(Math.random() * images.length);

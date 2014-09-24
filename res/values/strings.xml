@@ -7,8 +7,8 @@
     <string name="button_quit">Quit</string>
     <string name="imageView_description">Balloon area</string>
     <string name="title_activity_new_game">NewGame</string>
-    <string name="initial_clicks">Clicks: 0</string>
-    <string name="start_clicking">Start clicking!</string>
+    <string name="initial_clicks">Pops: 0</string>
+    <string name="start_clicking">Start popping!</string>
     <string name="dialog_gameOver">Game Over</string>
     <string name="dialog_highScore">High Score</string>
     <string name="dialog_close">Close</string>
