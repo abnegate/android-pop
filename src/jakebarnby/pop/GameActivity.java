@@ -34,12 +34,18 @@ import com.jakebarnby.pop.R;
  */
 public class GameActivity extends Activity {
 	
-	private ImageButton[] balloons;
-	private int[] images = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
-	
+	private static final int LEVELS = 8;
+	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
+	private static final int[] SCORE_BY_LEVEL = {20, 23, 26, 30, 32};
+	private static int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
 	private static final long COUNTDOWN_TIME = 10900;
-	private static final int MAX_BALLOONS = 8;
-	private static int score = 0;
+	
+	private int currentBalloons = 8;
+	private int score = 0;
+	private int currentLevel;
+	
+	private ImageButton[] balloons;
+	
 	
 	private CountDownTimer timer;
 	
@@ -49,11 +55,11 @@ public class GameActivity extends Activity {
 	private float height;
 
 	// Getters and setters----------
-	public static int getScore() {
+	public int getScore() {
 		return score;
 	}
 
-	public static void setScore(int newScore) {
+	public void setScore(int newScore) {
 		score = newScore;
 	}
 
@@ -81,16 +87,16 @@ public class GameActivity extends Activity {
 	 * Create and display the balloons to be popped on screen
 	 */
 	private void createBalloons() {
-		balloons = new ImageButton[MAX_BALLOONS];
+		balloons = new ImageButton[currentBalloons];
 		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
 		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.FILL);
 		layout.setLayoutParams(params);
 		
-		for (int i = 0; i < GameActivity.MAX_BALLOONS; i++) {
-			int imageId = (int)(Math.random() * images.length);
+		for (int i = 0; i < currentBalloons; i++) {
+			int imageId = (int)(Math.random() * IMAGES.length);
 			
 			balloons[i] = new ImageButton(this);
-			balloons[i].setImageResource(images[imageId]);
+			balloons[i].setImageResource(IMAGES[imageId]);
 			balloons[i].setBackgroundColor(Color.TRANSPARENT);
 			balloons[i].setScaleX(0.4f);
 			balloons[i].setScaleY(0.4f);
@@ -113,7 +119,7 @@ public class GameActivity extends Activity {
 		float x =  (float) ((-width) + (Math.random() * (width*2)));
 		float y = (float) ((-height) + (Math.random() * (height*2)));
 		
-		for(int j = 0; j < MAX_BALLOONS; j++) {
+		for(int j = 0; j < currentBalloons; j++) {
 			if (x >= balloons[j].getX() + 60 || x <= balloons[j].getX() - 60 &&
 				y >= balloons[j].getY() + 80 || y <= balloons[j].getY() - 80) {
 				b.setX(x);
@@ -139,7 +145,7 @@ public class GameActivity extends Activity {
 			startTimer();
 		}
 		if (!((TextView)  findViewById(R.id.textView_timer)).getText().equals("0")) {
-		GameActivity.score++;
+		score++;
 		((TextView) findViewById(R.id.textView_clickcount)).setText("Pops: " + score);
 		}
 	}
@@ -176,7 +182,7 @@ public class GameActivity extends Activity {
 		super.onResume();
 		// Resume ad adView
 		if (adView != null) { adView.resume(); }
-		GameActivity.score = 0;
+		score = 0;
 	}
 
 	@Override
@@ -224,7 +230,7 @@ public class GameActivity extends Activity {
 					} else {
 						stopTimer();
 						resetGame();
-						GameActivity.setScore(0); 
+						setScore(0); 
 					}
 				}
 			};
@@ -250,7 +256,7 @@ public class GameActivity extends Activity {
 		SharedPreferences prefs = getSharedPreferences("highScores", Context.MODE_PRIVATE);
 		int highScore = prefs.getInt("highScore", 0);
 		// If current score is greater than high score commit the new score
-		if (GameActivity.score > highScore) {
+		if (score > highScore) {
 			Editor editor = prefs.edit();
 			editor.putInt("highScore", score);
 			editor.commit();
@@ -282,6 +288,8 @@ public class GameActivity extends Activity {
 	 * Resets <code>TextView's</code> to their initial states for a new game
 	 */
 	private void resetGame() {
+		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
+		layout.removeAllViews();
 		balloons = null;
 		createBalloons();
 		TextView startClicking = (TextView) findViewById(R.id.textView_timer);
@@ -312,7 +320,7 @@ public class GameActivity extends Activity {
 				//New game button pressed, reset game activity
 				stopTimer();
 				resetGame();
-				GameActivity.setScore(0);
+				setScore(0);
 				dialog.dismiss();
 			}
 		});
@@ -324,7 +332,7 @@ public class GameActivity extends Activity {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                 	stopTimer();
                 	resetGame();
-    				GameActivity.setScore(0);
+    				setScore(0);
     				dialog.dismiss();
                 }
                 return true;
