@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,12 +38,15 @@ public class GameActivity extends Activity {
 	private int[] images = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
 	
 	private static final long COUNTDOWN_TIME = 10900;
-	private static final int MAX_BALLOONS = 12;
+	private static final int MAX_BALLOONS = 8;
 	private static int score = 0;
 	
 	private CountDownTimer timer;
 	
 	private AdView adView;
+	
+	private float width;
+	private float height;
 
 	// Getters and setters----------
 	public static int getScore() {
@@ -58,6 +65,12 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.activity_new_game);
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		width = 320;
+		height = 320;
 
 		
 		createBalloons();
@@ -70,7 +83,8 @@ public class GameActivity extends Activity {
 	private void createBalloons() {
 		balloons = new ImageButton[MAX_BALLOONS];
 		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
-		final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT-100, Gravity.CENTER);
+		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.FILL);
+		layout.setLayoutParams(params);
 		
 		for (int i = 0; i < GameActivity.MAX_BALLOONS; i++) {
 			int imageId = (int)(Math.random() * images.length);
@@ -78,45 +92,48 @@ public class GameActivity extends Activity {
 			balloons[i] = new ImageButton(this);
 			balloons[i].setImageResource(images[imageId]);
 			balloons[i].setBackgroundColor(Color.TRANSPARENT);
-			balloons[i].setLayoutParams(params);
 			balloons[i].setScaleX(0.4f);
 			balloons[i].setScaleY(0.4f);
-			balloons[i].setX((float) (Math.random() * (params.width - balloons[i].getWidth())));
-			balloons[i].setY((float) (Math.random() * (params.height - balloons[i].getHeight())));
+
+			balloons[i].setX((float) ((-width) + (Math.random() * (width*2))));
+			balloons[i].setY((float) ((-height) + (Math.random() * (height*2))));
 			balloons[i].setVisibility(View.VISIBLE);
 			balloons[i].setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					pop(params, v);
+					pop(v);
 				}
 			});
 			
 			layout.addView(balloons[i]);
 		}
 	}
-	/*
-	private void setBalloonPosition(int i) {
-		float x = (float) (Math.random() * (params.width - balloons[i].getWidth()));
-		float y = (float) (Math.random() * (params.height - balloons[i].getHeight()));
+	
+	private void setBalloonPosition(ImageButton b) {
+		float x =  (float) ((-width) + (Math.random() * (width*2)));
+		float y = (float) ((-height) + (Math.random() * (height*2)));
 		
-		for(int j = 0; j < i; j++) {
-			if (x <= balloons[j].getX() && x >= balloons[j].getX() + balloons[j].getWidth()) {
-				balloons[i].setX(x);
+		for(int j = 0; j < MAX_BALLOONS; j++) {
+			if (x >= balloons[j].getX() + 60 || x <= balloons[j].getX() - 60 &&
+				y >= balloons[j].getY() + 80 || y <= balloons[j].getY() - 80) {
+				b.setX(x);
+				b.setY(y);
+				return;
 			}
-			if (y <= balloons[j].getY() && y >= balloons[j].getY() + balloons[j].getHeight()) {
-				balloons[i].setY(y);
+			else {
+				setBalloonPosition(b);
 			}
 		}
-	}*/
+	}
 
 	/**
 	 * Response to popping a balloon, updates score and attached text view.
 	 * @param view - The view this method was called from
 	 */
-	protected void pop(FrameLayout.LayoutParams params, View view) {
+	protected void pop(View view) {
 		ImageButton b = (ImageButton)view;
-		b.setX((float) (Math.random() * (params.width - b.getWidth())));
-		b.setY((float) (Math.random() * (params.height - b.getHeight())));
+		setBalloonPosition(b);
+		
 		if (score == 0) {
 			// First click, start a new timer
 			startTimer();
@@ -265,6 +282,7 @@ public class GameActivity extends Activity {
 	 * Resets <code>TextView's</code> to their initial states for a new game
 	 */
 	private void resetGame() {
+		balloons = null;
 		createBalloons();
 		TextView startClicking = (TextView) findViewById(R.id.textView_timer);
 		startClicking.setText(R.string.start_clicking);
