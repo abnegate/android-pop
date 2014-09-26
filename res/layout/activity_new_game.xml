@@ -33,7 +33,7 @@
         android:id="@+id/textView_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1"
+        android:layout_weight="0.03"
         android:gravity="center"
         android:text="@string/start_clicking"
         android:textColor="@color/black"
@@ -44,7 +44,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.6"
+        android:layout_weight="0.8"
         android:background="@color/background"
         android:orientation="horizontal" >
     </FrameLayout>
