@@ -8,11 +8,9 @@
     <string name="title_activity_new_game">NewGame</string>
     <string name="initial_clicks">Pops: 0/45</string>
     <string name="start_clicking">Start popping!</string>
-    <string name="dialog_gameOver">Game Over</string>
     <string name="dialog_highScore">High Score</string>
     <string name="dialog_close">Close</string>
     <string name="dialog_back">Back</string>
-    <string name="dialog_newGame">New Game</string>
     <string name="title_activity_ad">AdActivity</string>
 
 </resources>

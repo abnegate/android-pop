@@ -10,12 +10,10 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -33,12 +31,11 @@ import com.startapp.android.publish.StartAppAd;
 public class GameActivity extends Activity {
 	
 	private StartAppAd startAppAd = new StartAppAd(this);
-	
-	private static final int LEVELS = 8;
+
 	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
-	private static final int[] SCORE_BY_LEVEL = {45, 50, 55, 60, 65, 70, 72, 75};
+	private static final int[] SCORE_BY_LEVEL =   {80, 90, 100, 100, 80, 70, 60, 70};
 	private static final int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
-	private static final long COUNTDOWN_TIME = 3900;
+	private static final long COUNTDOWN_TIME = 10900;
 	private static final float width = 320.0f;
 	private static final float height = 320.0f;
 	
@@ -232,7 +229,7 @@ public class GameActivity extends Activity {
 	 */
 	protected void showGameOverDialog() {
 		// Create custom dialog object
-		Dialog dialog = new FadeDialog(new Dialog(this), R.layout.dialog_game_over).getDialog();
+		final Dialog dialog = new FadeDialog(new Dialog(this), R.layout.dialog_game_over).getDialog();
 
 		if (!dialog.isShowing()) {
 			setDialogButtons(dialog);
@@ -247,18 +244,28 @@ public class GameActivity extends Activity {
 					+ "\nHigh score: "
 					+ getSharedPreferences("highScores", Context.MODE_PRIVATE).getInt("highScore", 0)
 					+ "\nClicks per second: " + (float) score / 5);
-			setDialogButtonListeners(dialog);
 			dialog.show();
 		}
+		
+		//Implement a short timer which enables the buttons on completion so users don;t accidentally close the dialog
+		new CountDownTimer(2000, 1000) {
+			@Override
+			public void onTick(long millisUntilFinished) {}
+
+			@Override
+			public void onFinish() {setDialogButtonListeners(dialog);}
+		}.start();
 	}
 	
 	private void setDialogButtons(Dialog d) {
 		LinearLayout layout = (LinearLayout) d.findViewById(R.id.dialog_buttonBar);
-		Button b = new Button(d.getContext(), null, R.style.clickMenuButton);
+		Button b = new Button(d.getContext());
 		//b.setBackgroundResource(R.layout.menu_button);
-		b.setWidth(layout.getWidth()/2);
+		b.setBackgroundColor(Color.parseColor("#ED6666"));
+		b.setTextColor(Color.parseColor("#000000"));
+		//b.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 		b.setId(100);
-		b.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		b.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		
 		if (score >= GameActivity.SCORE_BY_LEVEL[currentLevel]) {
 			b.setText("Next Level");
