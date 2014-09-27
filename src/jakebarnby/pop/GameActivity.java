@@ -1,6 +1,5 @@
 package jakebarnby.pop;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,11 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,9 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.jakebarnby.pop.R;
+import com.startapp.android.publish.StartAppAd;
 
 /**
  * Game screen of Click app, provides the user with interface for playing the game.
@@ -34,25 +29,24 @@ import com.jakebarnby.pop.R;
  */
 public class GameActivity extends Activity {
 	
-	private static final int LEVELS = 8;
-	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
-	private static final int[] SCORE_BY_LEVEL = {20, 23, 26, 30, 32};
+	private StartAppAd startAppAd = new StartAppAd(this);
+	
+	//private static final int LEVELS = 8;
+	//private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
+	//private static final int[] SCORE_BY_LEVEL = {20, 23, 26, 30, 32};
 	private static int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
 	private static final long COUNTDOWN_TIME = 10900;
+	private static final float width = 320.0f;
+	private static final float height = 320.0f;
 	
 	private int currentBalloons = 8;
 	private int score = 0;
-	private int currentLevel;
+	//private int currentLevel;
 	
 	private ImageButton[] balloons;
 	
 	
 	private CountDownTimer timer;
-	
-	private AdView adView;
-	
-	private float width;
-	private float height;
 
 	// Getters and setters----------
 	public int getScore() {
@@ -65,22 +59,13 @@ public class GameActivity extends Activity {
 
 	// -------------------------------
 
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.activity_new_game);
 		
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		width = 320;
-		height = 320;
-
-		
 		createBalloons();
-		setupBannerAd();
 	}
 	
 	/**
@@ -150,27 +135,6 @@ public class GameActivity extends Activity {
 		}
 	}
 	
-	/**
-	 * Find adView then load and show the banner ad.
-	 */
-	private void setupBannerAd() {
-	    // Create an ad.
-		if (adView == null) {
-			adView = (AdView) findViewById(R.id.adView);
-		    adView.loadAd(new AdRequest.Builder().addTestDevice("842328DD4BE72A185090A62C049FBA76").build());
-		}
-	}
-	
-	/**
-	 * Kill AdView thread
-	 * 
-	 */
-	protected void stopAds() {
-		if (adView != null) {
-			adView.destroy();
-			adView = null;
-		}
-	}
 
 	/*
 	 * ACTIVITY RESPONSE METHODS--------------
@@ -180,19 +144,17 @@ public class GameActivity extends Activity {
 	public void onResume() {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		super.onResume();
-		// Resume ad adView
-		if (adView != null) { adView.resume(); }
+		startAppAd.onResume();
 		score = 0;
 	}
 
 	@Override
 	public void onPause() {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-		// Pause ad adView
-		if (adView != null) { adView.pause(); }
 		//Stop CountDownTimer thread
 		if (timer!=null) { timer.cancel(); timer = null; }
 		super.onPause();
+		startAppAd.onPause();
 
 	}
 
@@ -200,7 +162,6 @@ public class GameActivity extends Activity {
 	public void onDestroy() {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		stopTimer();
-		stopAds();
 		super.onDestroy();
 	}
 

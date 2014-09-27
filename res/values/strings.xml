@@ -5,7 +5,6 @@
     <string name="button_newgame">New Game</string>
     <string name="button_highscore">High Score</string>
     <string name="button_quit">Quit</string>
-    <string name="imageView_description">Balloon area</string>
     <string name="title_activity_new_game">NewGame</string>
     <string name="initial_clicks">Pops: 0</string>
     <string name="start_clicking">Start popping!</string>
@@ -15,7 +14,5 @@
     <string name="dialog_back">Back</string>
     <string name="dialog_newGame">New Game</string>
     <string name="title_activity_ad">AdActivity</string>
-    <string name="admob_interstitial_id">NEW AD</string>
-    <string name="admob_banner_id">NEW AD</string>
 
 </resources>
