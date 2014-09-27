@@ -33,7 +33,7 @@ public class GameActivity extends Activity {
 	private StartAppAd startAppAd = new StartAppAd(this);
 
 	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
-	private static final int[] SCORE_BY_LEVEL =   {80, 90, 100, 100, 80, 70, 60, 70};
+	private static final int[] SCORE_BY_LEVEL =   {100, 90, 90, 100, 90, 60, 50, 60};
 	private static final int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
 	private static final long COUNTDOWN_TIME = 10900;
 	private static final float width = 320.0f;
@@ -129,9 +129,9 @@ public class GameActivity extends Activity {
 			// First click, start a new timer
 			startTimer();
 		}
-		if (!((TextView)  findViewById(R.id.textView_timer)).getText().equals("0/45")) {
-		score++;
-		((TextView) findViewById(R.id.textView_clickcount)).setText("Pops: " + score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);
+		if (!((TextView)  findViewById(R.id.textView_timer)).getText().equals("Level 1      Pops: 0/100")) {
+			score++;
+			((TextView) findViewById(R.id.textView_clickcount)).setText("Level " + (currentLevel+1) + "      Pops: " + score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);
 		}
 	}
 	
@@ -260,12 +260,11 @@ public class GameActivity extends Activity {
 	private void setDialogButtons(Dialog d) {
 		LinearLayout layout = (LinearLayout) d.findViewById(R.id.dialog_buttonBar);
 		Button b = new Button(d.getContext());
-		//b.setBackgroundResource(R.layout.menu_button);
-		b.setBackgroundColor(Color.parseColor("#ED6666"));
-		b.setTextColor(Color.parseColor("#000000"));
-		//b.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+		b.setBackgroundResource(R.layout.menu_button);
+		b.setBackgroundColor(Color.parseColor("#000000"));
+		b.setTextColor(Color.parseColor("#FFFFFF"));
 		b.setId(100);
-		b.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		b.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0.3f));
 		
 		if (score >= GameActivity.SCORE_BY_LEVEL[currentLevel]) {
 			b.setText("Next Level");
@@ -287,7 +286,7 @@ public class GameActivity extends Activity {
 		TextView startClicking = (TextView) findViewById(R.id.textView_timer);
 		startClicking.setText(R.string.start_clicking);
 		TextView clickCount = (TextView) findViewById(R.id.textView_clickcount);
-		clickCount.setText("Pops: 0" + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);	
+		clickCount.setText("Level " + (currentLevel+1) + "      Pops: 0" + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);	
 	}
 	
 	/**
