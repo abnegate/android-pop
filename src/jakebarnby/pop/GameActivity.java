@@ -33,8 +33,8 @@ public class GameActivity extends Activity {
 	
 	private StartAppAd startAppAd = new StartAppAd(this);
 
-	private static final int[] BALLOONS_BY_LEVEL = {12, 10,  8,  6,  5,  4,  3,  2,  2,  1,  100};
-	private static final int[] SCORE_BY_LEVEL =   {120, 110, 90, 90, 80, 60, 50, 40, 50, 25, 200};
+	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8,  6,  5,  4,  3,  2,  2,  1,  100};
+	private static final int[] SCORE_BY_LEVEL =    {90, 90, 80, 80, 80, 70, 60, 40, 45, 25, 200};
 	private static final int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
 	private static final long COUNTDOWN_TIME = 10900;
 	private static final float width = 320.0f;
@@ -244,7 +244,7 @@ public class GameActivity extends Activity {
 					+ score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]
 					+ "\nHigh score: "
 					+ getSharedPreferences("highScores", Context.MODE_PRIVATE).getInt("highScore", 0)
-					+ "\nClicks per second: " + (float) score / 5);
+					+ "\nPops per second: " + (float) score / 10);
 			dialog.show();
 		}
 		
