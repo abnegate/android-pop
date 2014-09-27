@@ -15,7 +15,6 @@
         android:gravity="center_horizontal"
         android:paddingBottom="@dimen/textView_dialogTitle_padding"
         android:paddingTop="@dimen/textView_dialogTitle_padding"
-        android:text="@string/dialog_gameOver"
         android:textColor="@color/white"
         android:textSize="@dimen/textView_dialogTitle_textsize"
         click:fontName="freescript.ttf" />
@@ -56,14 +55,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@string/dialog_back" />
-
-        <Button
-            android:id="@+id/button_dialogGONewgame"
-            style="@style/clickMenuButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/dialog_newGame" />
     </LinearLayout>
 
 </RelativeLayout>

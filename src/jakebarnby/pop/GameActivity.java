@@ -10,13 +10,16 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import com.jakebarnby.pop.R;
@@ -31,17 +34,17 @@ public class GameActivity extends Activity {
 	
 	private StartAppAd startAppAd = new StartAppAd(this);
 	
-	//private static final int LEVELS = 8;
-	//private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
-	//private static final int[] SCORE_BY_LEVEL = {20, 23, 26, 30, 32};
-	private static int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
-	private static final long COUNTDOWN_TIME = 10900;
+	private static final int LEVELS = 8;
+	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8 , 6, 4, 3, 2, 2};
+	private static final int[] SCORE_BY_LEVEL = {45, 50, 55, 60, 65, 70, 72, 75};
+	private static final int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
+	private static final long COUNTDOWN_TIME = 3900;
 	private static final float width = 320.0f;
 	private static final float height = 320.0f;
 	
-	private int currentBalloons = 8;
+	private int currentBalloons;
 	private int score = 0;
-	//private int currentLevel;
+	private int currentLevel = 0;
 	
 	private ImageButton[] balloons;
 	
@@ -64,7 +67,7 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.activity_new_game);
-		
+		currentBalloons = GameActivity.BALLOONS_BY_LEVEL[currentLevel];
 		createBalloons();
 	}
 	
@@ -129,9 +132,9 @@ public class GameActivity extends Activity {
 			// First click, start a new timer
 			startTimer();
 		}
-		if (!((TextView)  findViewById(R.id.textView_timer)).getText().equals("0")) {
+		if (!((TextView)  findViewById(R.id.textView_timer)).getText().equals("0/45")) {
 		score++;
-		((TextView) findViewById(R.id.textView_clickcount)).setText("Pops: " + score);
+		((TextView) findViewById(R.id.textView_clickcount)).setText("Pops: " + score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);
 		}
 	}
 	
@@ -232,17 +235,37 @@ public class GameActivity extends Activity {
 		Dialog dialog = new FadeDialog(new Dialog(this), R.layout.dialog_game_over).getDialog();
 
 		if (!dialog.isShowing()) {
+			setDialogButtons(dialog);
 			checkHighScore();
 			// Set values to containers
+			TextView title = (TextView) dialog.findViewById(R.id.textView_dialogGOTitle);
+			title.setText("Level " + (currentLevel+1));
+			
 			TextView info = (TextView) dialog.findViewById(R.id.textView_dialogGOInfo);
 			info.setText("Your score: "
-					+ score
+					+ score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]
 					+ "\nHigh score: "
 					+ getSharedPreferences("highScores", Context.MODE_PRIVATE).getInt("highScore", 0)
 					+ "\nClicks per second: " + (float) score / 5);
 			setDialogButtonListeners(dialog);
 			dialog.show();
 		}
+	}
+	
+	private void setDialogButtons(Dialog d) {
+		LinearLayout layout = (LinearLayout) d.findViewById(R.id.dialog_buttonBar);
+		Button b = new Button(d.getContext(), null, R.style.clickMenuButton);
+		//b.setBackgroundResource(R.layout.menu_button);
+		b.setWidth(layout.getWidth()/2);
+		b.setId(100);
+		b.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		
+		if (score >= GameActivity.SCORE_BY_LEVEL[currentLevel]) {
+			b.setText("Next Level");
+		} else {
+			b.setText("Try Again");
+		}
+		layout.addView(b);
 	}
 	
 	/**
@@ -253,9 +276,11 @@ public class GameActivity extends Activity {
 		layout.removeAllViews();
 		balloons = null;
 		createBalloons();
+		
 		TextView startClicking = (TextView) findViewById(R.id.textView_timer);
 		startClicking.setText(R.string.start_clicking);
-		((TextView) findViewById(R.id.textView_clickcount)).setText(R.string.initial_clicks);	
+		TextView clickCount = (TextView) findViewById(R.id.textView_clickcount);
+		clickCount.setText("Pops: 0" + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);	
 	}
 	
 	/**
@@ -274,11 +299,16 @@ public class GameActivity extends Activity {
 				finish();
 			}
 		});
-
-		((Button) dialog.findViewById(R.id.button_dialogGONewgame)).setOnClickListener(new OnClickListener() {
+		
+		final Button b = ((Button) dialog.findViewById(100));
+		b.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//New game button pressed, reset game activity
+				if (b.getText().equals("Next Level")) {
+					currentLevel++;
+					currentBalloons = GameActivity.BALLOONS_BY_LEVEL[currentLevel];	
+				}
 				stopTimer();
 				resetGame();
 				setScore(0);

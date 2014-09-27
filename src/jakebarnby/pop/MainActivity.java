@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		super.onCreate(savedInstanceState);
 		//Replace "" with app id for Pop
-		StartAppSDK.init(this, "109453066", "209532246", true);
+		//StartAppSDK.init(this, "109453066", "209532246", true);
 		setContentView(R.layout.activity_main);
 
 	}
