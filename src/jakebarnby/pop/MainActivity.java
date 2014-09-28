@@ -2,6 +2,7 @@ package jakebarnby.pop;
 
 import com.jakebarnby.pop.R;
 import com.startapp.android.publish.StartAppAd;
+import com.startapp.android.publish.StartAppAd.AdMode;
 import com.startapp.android.publish.StartAppSDK;
 
 import android.app.Activity;
@@ -21,7 +22,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity {
 
-	private StartAppAd startAppAd = new StartAppAd(this);
+	private StartAppAd startAppAd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		StartAppSDK.init(this, "109453066", "209532246", true);
 		setContentView(R.layout.activity_main);
+		startAppAd = new StartAppAd(this);
 
 	}
 
@@ -57,8 +59,7 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		startAppAd.showAd(); // show the ad
-		startAppAd.loadAd(); // load the next ad
+		startAppAd.onBackPressed();
 		finish();
 	}
 
@@ -99,7 +100,7 @@ public class MainActivity extends Activity {
 	 */
 	public void showInsertitial(View view) {
 		startAppAd.showAd(); // show the ad
-		startAppAd.loadAd(); // load the next ad
+		startAppAd.loadAd(AdMode.AUTOMATIC); // load the next ad
 		finish();
 	}
 }
