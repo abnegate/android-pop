@@ -44,7 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_dialogGOInfo"
         android:background="@color/black"
-        android:divider="@drawable/divider"
         android:dividerPadding="6dip"
         android:orientation="horizontal" >
 

@@ -34,7 +34,7 @@ public class GameActivity extends Activity {
 	private StartAppAd startAppAd = new StartAppAd(this);
 
 	private static final int[] BALLOONS_BY_LEVEL = {12, 10, 8,  6,  5,  4,  3,  2,  2,  1,  100};
-	private static final int[] SCORE_BY_LEVEL =    {90, 90, 80, 80, 80, 70, 60, 40, 45, 25, 200};
+	private static final int[] SCORE_BY_LEVEL =    {60, 60, 70, 70, 70, 60, 50, 40, 45, 25, 300};
 	private static final int[] IMAGES = {R.drawable.balloon_blue, R.drawable.balloon_red, R.drawable.balloon_green};
 	private static final long COUNTDOWN_TIME = 10900;
 	private static final float width = 320.0f;
@@ -70,7 +70,7 @@ public class GameActivity extends Activity {
 	}
 	
 	/**
-	 * Create and display the balloons to be popped on screen
+	 * Create, initialize and display the balloons to be popped on screen
 	 */
 	private void createBalloons() {
 		balloons = new ImageButton[currentBalloons];
@@ -86,7 +86,6 @@ public class GameActivity extends Activity {
 			balloons[i].setBackgroundColor(Color.TRANSPARENT);
 			balloons[i].setScaleX(0.4f);
 			balloons[i].setScaleY(0.4f);
-
 			balloons[i].setX((float) ((-width) + (Math.random() * (width*2))));
 			balloons[i].setY((float) ((-height) + (Math.random() * (height*2))));
 			balloons[i].setVisibility(View.VISIBLE);
@@ -96,7 +95,6 @@ public class GameActivity extends Activity {
 					pop(v);
 				}
 			});
-			
 			layout.addView(balloons[i]);
 		}
 	}
@@ -130,10 +128,8 @@ public class GameActivity extends Activity {
 			// First click, start a new timer
 			startTimer();
 		}
-		if (!((TextView)  findViewById(R.id.textView_timer)).getText().equals("Level 1    Pops: 0/100")) {
-			score++;
-			((TextView) findViewById(R.id.textView_clickcount)).setText("Level " + (currentLevel+1) + "   Pops: " + score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);
-		}
+		score++;
+		((TextView) findViewById(R.id.textView_clickcount)).setText("Level " + (currentLevel+1) + "   Pops: " + score + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);
 	}
 	
 
@@ -176,24 +172,16 @@ public class GameActivity extends Activity {
 		
 				@Override
 				public void onTick(long millisUntilFinished) {
-					TextView timer = (TextView) findViewById(R.id.textView_timer);
-					//Update the score down textView with the new time remaining
-					timer.setText(Long.toString(millisUntilFinished/1000));
-					
+					//Update timer text
+					((TextView) findViewById(R.id.textView_timer)).setText(Long.toString(millisUntilFinished/1000));	
 				}
 
 				@Override
 				public void onFinish() {
-					//Set the score down textView to display 0
-					((TextView) findViewById(R.id.textView_timer)).
-					setText(String.valueOf(0));
-					if (hasWindowFocus()) {
-						showGameOverDialog();
-					} else {
-						stopTimer();
-						resetGame();
-						setScore(0); 
-					}
+					// Show the dialog if the user is still in this activity, otherwise reset the game
+					((TextView) findViewById(R.id.textView_timer)).setText(String.valueOf(0));
+					if (hasWindowFocus()) { showGameOverDialog(); } 
+					else { resetGame(); }
 				}
 			};
 		timer.start(); 
@@ -258,7 +246,12 @@ public class GameActivity extends Activity {
 		}.start();
 	}
 	
+	/**
+	 * Sets the dialog buttons based on the players score
+	 * @param d The dialog to set buttons for
+	 */
 	private void setDialogButtons(Dialog d) {
+		//Find button layout and initialize button 
 		LinearLayout layout = (LinearLayout) d.findViewById(R.id.dialog_buttonBar);
 		Button b = new Button(d.getContext());
 		b.setBackgroundResource(R.layout.menu_button);
@@ -267,7 +260,7 @@ public class GameActivity extends Activity {
 		b.setTypeface(null, Typeface.BOLD);
 		b.setId(100);
 		b.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0.3f));
-		
+		//Check if users score was high enough for this level
 		if (score >= GameActivity.SCORE_BY_LEVEL[currentLevel]) {
 			b.setText("Next Level");
 		} else {
@@ -277,18 +270,21 @@ public class GameActivity extends Activity {
 	}
 	
 	/**
-	 * Resets <code>TextView's</code> to their initial states for a new game
+	 * Resets the game screen
 	 */
 	private void resetGame() {
+		stopTimer();
+		// Remove and recreate balloons
 		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
 		layout.removeAllViews();
 		balloons = null;
 		createBalloons();
-		
+		// Reset text
 		TextView startClicking = (TextView) findViewById(R.id.textView_timer);
 		startClicking.setText(R.string.start_clicking);
 		TextView clickCount = (TextView) findViewById(R.id.textView_clickcount);
 		clickCount.setText("Level " + (currentLevel+1) + "   Pops: 0" + "/" + GameActivity.SCORE_BY_LEVEL[currentLevel]);	
+		setScore(0);
 	}
 	
 	/**
@@ -312,14 +308,12 @@ public class GameActivity extends Activity {
 		b.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//New game button pressed, reset game activity
+				//User made it to the next level, increase the level and adjust balloons
 				if (b.getText().equals("Next Level")) {
 					currentLevel++;
 					currentBalloons = GameActivity.BALLOONS_BY_LEVEL[currentLevel];	
 				}
-				stopTimer();
 				resetGame();
-				setScore(0);
 				dialog.dismiss();
 			}
 		});
@@ -329,9 +323,7 @@ public class GameActivity extends Activity {
 			@Override
             public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                	stopTimer();
                 	resetGame();
-    				setScore(0);
     				dialog.dismiss();
                 }
                 return true;
